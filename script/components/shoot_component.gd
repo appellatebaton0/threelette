@@ -1,6 +1,9 @@
 extends Component
 class_name ShootComponent
 
+@export var fire_rate = 1.0
+var fire_delay = 0.0
+
 @onready var player:Player = get_parent()
 @onready var camera:Camera = get_tree().get_first_node_in_group("Camera")
 @onready var me:Node2D = get_me()
@@ -37,7 +40,9 @@ func _ready() -> void:
 
 func _process(delta: float) -> void:
 	
-	if Input.is_action_just_pressed("Fire"):
+	if Input.is_action_pressed("Fire") and fire_delay <= 0:
 		fire_bullet()
+		fire_delay = fire_rate
 	
 	me.look_at(get_mouse_position())
+	fire_delay = move_toward(fire_delay, 0 , delta)
