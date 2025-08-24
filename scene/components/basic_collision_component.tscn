@@ -1,0 +1,17 @@
+[gd_scene load_steps=3 format=3 uid="uid://b05c8drl4r5ed"]
+
+[ext_resource type="Script" uid="uid://cen0hya12ws2a" path="res://script/components/basic_collision_component.gd" id="1_1hgy2"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_1j7mg"]
+size = Vector2(1, 1)
+
+[node name="BasicCollisionComponent" type="Area2D"]
+collision_layer = 8
+collision_mask = 5
+script = ExtResource("1_1hgy2")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_1j7mg")
+
+[connection signal="area_entered" from="." to="." method="_on_area_entered"]
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]

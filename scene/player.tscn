@@ -1,0 +1,38 @@
+[gd_scene load_steps=7 format=3 uid="uid://bfbvhqur3fi7d"]
+
+[ext_resource type="Script" uid="uid://dylvpscfmwgdk" path="res://script/player.gd" id="1_hjaqi"]
+[ext_resource type="Texture2D" uid="uid://b24236iw21m5x" path="res://asset/player.png" id="1_xo3ru"]
+[ext_resource type="PackedScene" uid="uid://cwqi07e2k814j" path="res://scene/components/shoot_component.tscn" id="3_fvtld"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fvtld"]
+atlas = ExtResource("1_xo3ru")
+region = Rect2(0, 0, 8, 8)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_fvtld"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_fvtld")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_fvtld"]
+size = Vector2(8, 8)
+
+[node name="Player" type="CharacterBody2D"]
+collision_layer = 2
+collision_mask = 5
+script = ExtResource("1_hjaqi")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+texture_filter = 1
+sprite_frames = SubResource("SpriteFrames_fvtld")
+
+[node name="MidAirCol" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_fvtld")
+
+[node name="ShootComponent" parent="." instance=ExtResource("3_fvtld")]
+position = Vector2(8, 0)

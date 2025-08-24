@@ -1,0 +1,11 @@
+[gd_scene load_steps=3 format=3 uid="uid://cwqi07e2k814j"]
+
+[ext_resource type="Script" uid="uid://cic1o1geyo36v" path="res://script/components/shoot_component.gd" id="1_dpiss"]
+[ext_resource type="Texture2D" uid="uid://bpo8sr3jwfrbt" path="res://asset/aim_indicator.png" id="2_uqvnx"]
+
+[node name="ShootComponent" type="Node2D"]
+script = ExtResource("1_dpiss")
+
+[node name="Indicator" type="Sprite2D" parent="."]
+texture_filter = 1
+texture = ExtResource("2_uqvnx")

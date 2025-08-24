@@ -1,0 +1,37 @@
+[gd_scene load_steps=7 format=3 uid="uid://c0fs5pamqm6sx"]
+
+[ext_resource type="Script" uid="uid://dir5lu04xq5wd" path="res://script/ghost.gd" id="1_wbdc0"]
+[ext_resource type="Texture2D" uid="uid://du6twrl60jldv" path="res://asset/ghost.png" id="2_x6lhc"]
+[ext_resource type="PackedScene" uid="uid://brao4oyh1oqjn" path="res://scene/components/health_component.tscn" id="3_x6lhc"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3vdjl"]
+atlas = ExtResource("2_x6lhc")
+region = Rect2(0, 0, 8, 8)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_kioxi"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3vdjl")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_jtnwv"]
+size = Vector2(8, 8)
+
+[node name="Ghost" type="Area2D"]
+collision_layer = 4
+collision_mask = 10
+script = ExtResource("1_wbdc0")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+texture_filter = 1
+sprite_frames = SubResource("SpriteFrames_kioxi")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_jtnwv")
+
+[node name="HealthComponent" parent="." instance=ExtResource("3_x6lhc")]
