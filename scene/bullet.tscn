@@ -1,21 +1,35 @@
-[gd_scene load_steps=6 format=3 uid="uid://bxh6b3pdh5us6"]
+[gd_scene load_steps=7 format=3 uid="uid://bxh6b3pdh5us6"]
 
-[ext_resource type="Script" uid="uid://bpm65cx0drr5d" path="res://script/bullet.gd" id="1_xw300"]
+[ext_resource type="Script" uid="uid://chkqfm8bp2oq0" path="res://script/actor.gd" id="1_m2l4i"]
 [ext_resource type="Texture2D" uid="uid://bjxsnkj2yrxxm" path="res://asset/bullet.png" id="2_m2l4i"]
-[ext_resource type="PackedScene" uid="uid://b05c8drl4r5ed" path="res://scene/components/basic_collision_component.tscn" id="3_1bt1p"]
-[ext_resource type="PackedScene" uid="uid://c1b6tlbtnjq7" path="res://scene/components/straight_fire_component.tscn" id="4_duwpg"]
-[ext_resource type="PackedScene" uid="uid://16br1unwluec" path="res://scene/components/basic_damage_component.tscn" id="5_duwpg"]
+[ext_resource type="PackedScene" uid="uid://bywv41s6t0tet" path="res://scene/components/damage_collision_component.tscn" id="4_1bt1p"]
+[ext_resource type="PackedScene" uid="uid://c1b6tlbtnjq7" path="res://scene/components/move_straight_component.tscn" id="4_duwpg"]
+[ext_resource type="Script" uid="uid://cmhvcqje2dowc" path="res://script/components/basic_damage_component.gd" id="5_duwpg"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_duwpg"]
+size = Vector2(1, 1)
 
 [node name="Bullet" type="Node2D"]
 z_index = -1
-script = ExtResource("1_xw300")
+script = ExtResource("1_m2l4i")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture_filter = 1
 texture = ExtResource("2_m2l4i")
 
-[node name="BasicCollisionComponent" parent="." instance=ExtResource("3_1bt1p")]
+[node name="MoveStraightComponent" parent="." node_paths=PackedStringArray("actor") instance=ExtResource("4_duwpg")]
+actor = NodePath("..")
 
-[node name="StraightFireComponent" parent="." instance=ExtResource("4_duwpg")]
+[node name="DamageCollisionComponent" parent="." node_paths=PackedStringArray("actor") instance=ExtResource("4_1bt1p")]
+collision_layer = 8
+collision_mask = 5
+duplicate_damage = true
+die_on_hit_environment = true
+actor = NodePath("..")
 
-[node name="BasicDamageComponent" parent="." instance=ExtResource("5_duwpg")]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DamageCollisionComponent"]
+shape = SubResource("RectangleShape2D_duwpg")
+
+[node name="BasicDamageComponent" type="Node2D" parent="." node_paths=PackedStringArray("actor")]
+script = ExtResource("5_duwpg")
+actor = NodePath("..")

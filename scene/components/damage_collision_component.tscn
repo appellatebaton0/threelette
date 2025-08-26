@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3 uid="uid://bywv41s6t0tet"]
+
+[ext_resource type="Script" uid="uid://bke1vkcqajs1f" path="res://script/components/damage_collision_component.gd" id="1_f7g8x"]
+
+[node name="DamageCollisionComponent" type="Area2D"]
+script = ExtResource("1_f7g8x")
+
+[connection signal="area_entered" from="." to="." method="_on_area_entered"]
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]

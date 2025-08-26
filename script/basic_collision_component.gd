@@ -1,0 +1,2 @@
+extends CollisionComponent
+class_name BasicCollisionComponent

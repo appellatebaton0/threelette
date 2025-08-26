@@ -1,0 +1,41 @@
+extends MotionComponent
+class_name GhostMoveComponent
+
+var me:Node2D = get_me()
+
+@onready var player:Actor = get_tree().get_first_node_in_group("Player")
+
+@export var MOVEMENT_SPEED:float = 10.0
+
+@export var WOBBLE_HEIGHT:float = 14
+@export var WOBBLE_WAVELENGTH:float = 2
+
+@export var DAMAGE_COOLDOWN:float = 3.0
+var damage_cooldown:float = 0.0
+
+var velocity:Vector2 = Vector2.ZERO
+
+func _process(delta: float) -> void:
+	if player != null:
+		direction = actor.global_position.direction_to(player.global_position)
+		
+		if actor.global_position.distance_to(player.global_position) > 20:
+			direction = global_position.direction_to(player.global_position + Vector2((WOBBLE_HEIGHT * (sin(global_position.y / WOBBLE_WAVELENGTH))), (WOBBLE_HEIGHT * (sin(global_position.x / WOBBLE_WAVELENGTH)))))
+		
+		var random_offset:float = 25 * randf()
+		velocity += (direction * (MOVEMENT_SPEED + random_offset))
+		actor.global_position += (velocity * delta)
+		velocity -= (direction * (MOVEMENT_SPEED + random_offset))
+		velocity /= 1.3
+
+
+func _ready() -> void:
+	var health_component:HealthComponent
+	for child in get_children():
+		if child is HealthComponent:
+			health_component = child
+	if health_component != null:
+		health_component.health_reached_zero.connect(_on_death)
+
+func _on_death():
+	queue_free()

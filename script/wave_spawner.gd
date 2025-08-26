@@ -3,6 +3,9 @@ class_name WaveSpawner
 
 signal round_started
 
+var round_running:bool = false
+var round_num:int = 1
+
 @onready var spawnpoints:Array[Vector2] = get_spawnpoints()
 func get_spawnpoints() -> Array[Vector2]:
 	var spawnpoints:Array[Vector2]
@@ -13,10 +16,10 @@ func get_spawnpoints() -> Array[Vector2]:
 	
 	return spawnpoints
 
-var enemy_options:Array[PackedScene] = [load("res://scene/ghost.tscn")]
+@export var enemy_options:Array[PackedScene]
 
 func spawn_enemy_at(position:Vector2):
-	var new:Ghost = enemy_options.pick_random().instantiate()
+	var new:Actor = enemy_options.pick_random().instantiate()
 	
 	new.global_position = position
 	add_sibling(new)
@@ -28,7 +31,6 @@ func spawn_round(round_number:int):
 	
 	for i in range(round_number):
 		if len(spawn_options) <= 0:
-			print(spawn_options)
 			spawn_options = spawnpoints.duplicate()
 		
 		var spawn_at = spawnpoints.pick_random()
@@ -37,9 +39,13 @@ func spawn_round(round_number:int):
 		spawn_options.erase(spawn_at)
 		
 	round_started.emit()
+	round_running = true
+	
 
-var e = false
 func _process(delta: float) -> void:
-	if not e:
-		spawn_round(5)
-		e = true
+	if not round_running:
+		spawn_round(round_num)
+	elif len(get_tree().get_nodes_in_group("Ghost")) <= 0:
+		round_running = false
+		round_num += 1
+		

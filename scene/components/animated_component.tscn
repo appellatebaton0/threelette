@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=3 uid="uid://cjh4saf780s6x"]
+
+[ext_resource type="Script" uid="uid://d1uixovc2nu71" path="res://script/components/animated_component.gd" id="1_qu187"]
+
+[node name="AnimatedComponent" type="AnimatedSprite2D"]
+texture_filter = 1
+script = ExtResource("1_qu187")

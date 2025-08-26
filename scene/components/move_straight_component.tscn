@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://c1b6tlbtnjq7"]
+
+[ext_resource type="Script" uid="uid://cqgqtv1bmvigt" path="res://script/components/move_straight_component.gd" id="1_tvlaj"]
+
+[node name="MoveStraightComponent" type="Node2D"]
+script = ExtResource("1_tvlaj")
