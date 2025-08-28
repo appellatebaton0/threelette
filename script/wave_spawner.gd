@@ -2,6 +2,9 @@ extends Node2D
 class_name WaveSpawner
 
 signal round_started
+signal round_complete
+
+signal start_round
 
 var round_running:bool = false
 var round_num:int = 1
@@ -16,12 +19,22 @@ func get_spawnpoints() -> Array[Vector2]:
 	
 	return spawnpoints
 
-@export var enemy_options:Array[PackedScene]
+@export var enemy_options:Array[ConditionalEnemyOption]
+
+func get_enemy_options() -> Array[PackedScene]:
+	var options:Array[PackedScene]
+	
+	return options
 
 func spawn_enemy_at(position:Vector2):
-	var new:Actor = enemy_options.pick_random().instantiate()
+	
+	var new:Actor = get_enemy_options().pick_random().instantiate()
 	
 	new.global_position = position
+	
+	new.get_motion_component().randomize_values()
+	new.get_health_component().randomize_values()
+	
 	add_sibling(new)
 	
 	return new
@@ -43,9 +56,24 @@ func spawn_round(round_number:int):
 	
 
 func _process(delta: float) -> void:
-	if not round_running:
-		spawn_round(round_num)
-	elif len(get_tree().get_nodes_in_group("Ghost")) <= 0:
+	if len(get_tree().get_nodes_in_group("Ghost")) <= 0 and round_running:
 		round_running = false
 		round_num += 1
+		round_complete.emit()
 		
+
+
+func _on_upgrade_selected() -> void:
+	start_round.emit()
+func _on_start_round() -> void:
+	spawn_round(round_num)
+
+
+func _on_main_reset() -> void:
+	for ghost in get_tree().get_nodes_in_group("Ghost"):
+		if ghost is Actor:
+			ghost.get_health_component().take_damage(20000, ghost)
+	round_running = false
+	round_num = 1
+	round_complete.emit()
+	

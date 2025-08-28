@@ -2,7 +2,7 @@ extends Camera2D
 class_name Camera
 
 @export var player:Actor
-@onready var player_controller:ControlComponent = player.get_component("ControlComponent")
+@onready var player_controller:ControlComponent = player.get_motion_component()
 
 # How fast the camera follows the player, 0 being not at all, 1 being instant.
 @export var follow_lerp:float = 0.1

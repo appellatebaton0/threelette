@@ -19,11 +19,24 @@ func get_health_component() -> HealthComponent:
 			return child
 	return null
 
-func get_damage_component() -> DamageComponent:
+func get_shoot_component() -> ShootComponent:
 	for child in get_children():
-		if child is DamageComponent:
+		if child is ShootComponent:
 			return child
 	return null
+
+
+func get_damage_components() -> Array[DamageComponent]:
+	var components:Array[DamageComponent]
+	
+	for child in get_children():
+		if child is DamageComponent:
+			components.append(child)
+	
+	return components
+
+
+
 #
 #func _process(delta: float) -> void:
 	#var c:Array[DamageComponent]

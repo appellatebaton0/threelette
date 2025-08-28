@@ -18,6 +18,7 @@ texture_filter = 1
 texture = ExtResource("2_m2l4i")
 
 [node name="MoveStraightComponent" parent="." node_paths=PackedStringArray("actor") instance=ExtResource("4_duwpg")]
+persistent = true
 actor = NodePath("..")
 
 [node name="DamageCollisionComponent" parent="." node_paths=PackedStringArray("actor") instance=ExtResource("4_1bt1p")]
@@ -25,11 +26,13 @@ collision_layer = 8
 collision_mask = 5
 duplicate_damage = true
 die_on_hit_environment = true
+persistent = true
 actor = NodePath("..")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="DamageCollisionComponent"]
 shape = SubResource("RectangleShape2D_duwpg")
 
-[node name="BasicDamageComponent" type="Node2D" parent="." node_paths=PackedStringArray("actor")]
+[node name="BasicDamageComponent" type="Node2D" parent="."]
 script = ExtResource("5_duwpg")
-actor = NodePath("..")
+damage = 10.0
+persistent = true

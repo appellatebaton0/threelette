@@ -36,27 +36,32 @@ script = ExtResource("1_a6lf4")
 [node name="AnimatedComponent" parent="." node_paths=PackedStringArray("actor") instance=ExtResource("2_i6qc7")]
 sprite_frames = SubResource("SpriteFrames_kioxi")
 animation = &"idle"
+persistent = true
 actor = NodePath("..")
 
 [node name="GhostMotionComponent" type="Node2D" parent="." node_paths=PackedStringArray("actor")]
 script = ExtResource("3_tshrd")
+persistent = true
 actor = NodePath("..")
 
 [node name="HealthComponent" parent="." instance=ExtResource("3_x6lhc")]
 die_on_health_zero = true
+persistent = true
 
 [node name="BasicCollisionComponent" type="Area2D" parent="."]
 collision_layer = 4
 collision_mask = 10
 script = ExtResource("5_224s6")
+persistent = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="BasicCollisionComponent"]
 shape = SubResource("RectangleShape2D_224s6")
 
 [node name="DamageCollisionComponent" parent="." node_paths=PackedStringArray("actor") instance=ExtResource("4_224s6")]
-collision_layer = 4
+collision_layer = 8
 collision_mask = 2
 duplicate_damage = true
+persistent = true
 actor = NodePath("..")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="DamageCollisionComponent"]
@@ -65,3 +70,4 @@ shape = SubResource("RectangleShape2D_i6qc7")
 [node name="BasicDamageComponent" type="Node2D" parent="."]
 script = ExtResource("7_sxdsy")
 kill_actor = false
+persistent = true

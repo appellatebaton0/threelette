@@ -1,4 +1,4 @@
-[gd_scene load_steps=33 format=3 uid="uid://l7ahshis2ps3"]
+[gd_scene load_steps=34 format=3 uid="uid://l7ahshis2ps3"]
 
 [ext_resource type="Script" uid="uid://chkqfm8bp2oq0" path="res://script/actor.gd" id="1_s4jxa"]
 [ext_resource type="Texture2D" uid="uid://b24236iw21m5x" path="res://asset/player.png" id="1_xo3ru"]
@@ -196,33 +196,42 @@ animations = [{
 _data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
 point_count = 2
 
+[sub_resource type="Gradient" id="Gradient_hp4bs"]
+colors = PackedColorArray(1, 1, 1, 0.611765, 1, 1, 1, 0)
+
 [node name="Player" type="Node2D"]
 script = ExtResource("1_s4jxa")
 
 [node name="AnimatedComponent" parent="." node_paths=PackedStringArray("actor") instance=ExtResource("2_oh5ij")]
 sprite_frames = SubResource("SpriteFrames_fvtld")
 animation = &"sliding"
+persistent = true
 actor = NodePath("..")
 
 [node name="ShootComponent" parent="." node_paths=PackedStringArray("actor") instance=ExtResource("3_fvtld")]
 position = Vector2(8, 0)
+persistent = true
 actor = NodePath("..")
 
 [node name="ControlComponent" parent="." node_paths=PackedStringArray("actor") instance=ExtResource("4_oh5ij")]
 collision_layer = 2
 collision_mask = 5
+persistent = true
 actor = NodePath("..")
 
 [node name="HealthComponent" parent="." node_paths=PackedStringArray("actor") instance=ExtResource("4_ct4mp")]
+reset_on_health_zero = true
+persistent = true
 actor = NodePath("..")
 
 [node name="TrailComponent" type="Line2D" parent="." node_paths=PackedStringArray("actor")]
-z_index = 1
-points = PackedVector2Array(13, -1, 0, 11, -9, 4, -11, -7)
+z_index = -1
 width = 4.0
 width_curve = SubResource("Curve_hp4bs")
 default_color = Color(1, 1, 1, 0.160784)
+gradient = SubResource("Gradient_hp4bs")
 script = ExtResource("7_hp4bs")
 trail_segments = 9
 lerp_weight = 0.3
+persistent = true
 actor = NodePath("..")

@@ -9,6 +9,8 @@ var target:Actor
 
 var source:Actor
 
+@export var kill_actor:bool = true
+
 func _once_ready() -> void:
 	if source == null:
 		source = actor

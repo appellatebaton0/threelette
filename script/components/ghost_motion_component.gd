@@ -5,15 +5,15 @@ var me:Node2D = get_me()
 
 @onready var player:Actor = get_tree().get_first_node_in_group("Player")
 
-@export var MOVEMENT_SPEED:float = 10.0
+@export var MOVEMENT_SPEED:float = 40.0
 
-@export var WOBBLE_HEIGHT:float = 14
-@export var WOBBLE_WAVELENGTH:float = 2
-
-@export var DAMAGE_COOLDOWN:float = 3.0
-var damage_cooldown:float = 0.0
+@export var WOBBLE_HEIGHT:float = 28
+@export var WOBBLE_WAVELENGTH:float = 4
 
 var velocity:Vector2 = Vector2.ZERO
+
+func randomize_values():
+	MOVEMENT_SPEED = randf_range(25.0, 55.0)
 
 func _process(delta: float) -> void:
 	if player != null:

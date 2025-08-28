@@ -8,8 +8,16 @@ signal took_damage
 @export var health:float = 50.0
 
 @export var die_on_health_zero:bool = false
+@export var reset_on_health_zero:bool = false
 
-func take_damage(amount:float, from:Actor, knockback:float = 130.0):
+@onready var main:Main = get_tree().get_first_node_in_group("Main")
+
+func randomize_values():
+	max = randf_range(30, 80)
+	health = max
+
+func take_damage(amount:float, from:Actor, knockback:float = 110.0):
+	
 	if amount < 0:
 		return
 	
@@ -26,3 +34,6 @@ func take_damage(amount:float, from:Actor, knockback:float = 130.0):
 func _on_health_reached_zero():
 	if die_on_health_zero:
 		actor.queue_free()
+	if reset_on_health_zero:
+		main.reset.emit()
+		health = max
