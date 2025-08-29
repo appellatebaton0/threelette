@@ -9,7 +9,7 @@ func randomize_values():
 func component_effect() -> String:
 	return "+" + str(floor(1000 * (1 - modifier.modifier)) / 10) + " Fire Rate"
 
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	if actor != null:
 		print("freed ", self)
 		var shoot_component:ShootComponent = actor.get_shoot_component()

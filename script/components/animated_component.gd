@@ -7,8 +7,8 @@ var me:AnimatedSprite2D = get_me()
 
 @onready var motion_component:MotionComponent = actor.get_motion_component()
 
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	if flip_by_move_direction:
-		me.flip_h = motion_component.direction.x < 0
+		me.flip_h = motion_component.is_facing_left()
 	
 	me.play(motion_component.state)

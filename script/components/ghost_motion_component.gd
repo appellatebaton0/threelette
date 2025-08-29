@@ -15,6 +15,9 @@ var velocity:Vector2 = Vector2.ZERO
 func randomize_values():
 	MOVEMENT_SPEED = randf_range(25.0, 55.0)
 
+func is_facing_left():
+	return velocity.x < 0
+
 func _process(delta: float) -> void:
 	if player != null:
 		direction = actor.global_position.direction_to(player.global_position)

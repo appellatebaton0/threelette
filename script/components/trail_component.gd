@@ -24,7 +24,7 @@ func add_points(amount:int):
 func _ready() -> void:
 	add_points(trail_segments)
 
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	for i in me.get_point_count():
 		# print(to_local(followee.global_position))
 		if i == 0:

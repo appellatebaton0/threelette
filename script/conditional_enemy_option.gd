@@ -8,10 +8,13 @@ enum CONDITION_TYPES{DIVISIBLE_BY_MATCH, PAST_ROUND, BEFORE_ROUND}
 
 @export var value:int
 
-func is_true_on_round(round:int) -> bool:
+func is_true_on_round(round_num:int) -> bool:
 	
 	match condition_type:
 		CONDITION_TYPES.DIVISIBLE_BY_MATCH:
-			return floor(float(value)/round) == float(value)/round
-		CONDITION_TYPES.PAST_ROUND
+			return floor(float(value)/round_num) == float(value)/round_num
+		CONDITION_TYPES.PAST_ROUND:
+			return round_num > value
+		CONDITION_TYPES.BEFORE_ROUND:
+			return round_num < value
 	return false

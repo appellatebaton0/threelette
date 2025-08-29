@@ -1,9 +1,9 @@
 extends Node2D
 class_name Actor
 
-func get_component(name:String) -> Component:
+func get_component(look_name:String) -> Component:
 	for child in get_children():
-		if child.name == name:
+		if child.name == look_name:
 			return child
 	return null
 

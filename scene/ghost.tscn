@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://c0fs5pamqm6sx"]
+[gd_scene load_steps=19 format=3 uid="uid://c0fs5pamqm6sx"]
 
 [ext_resource type="Script" uid="uid://chkqfm8bp2oq0" path="res://script/actor.gd" id="1_a6lf4"]
 [ext_resource type="Texture2D" uid="uid://du6twrl60jldv" path="res://asset/ghost.png" id="2_6blvv"]
@@ -6,8 +6,9 @@
 [ext_resource type="Script" uid="uid://dhxm1k5v433lq" path="res://script/components/ghost_motion_component.gd" id="3_tshrd"]
 [ext_resource type="PackedScene" uid="uid://brao4oyh1oqjn" path="res://scene/components/health_component.tscn" id="3_x6lhc"]
 [ext_resource type="PackedScene" uid="uid://bywv41s6t0tet" path="res://scene/components/damage_collision_component.tscn" id="4_224s6"]
-[ext_resource type="Script" uid="uid://cen0hya12ws2a" path="res://script/basic_collision_component.gd" id="5_224s6"]
+[ext_resource type="Script" uid="uid://cen0hya12ws2a" path="res://script/components/basic_collision_component.gd" id="5_224s6"]
 [ext_resource type="Script" uid="uid://cmhvcqje2dowc" path="res://script/components/basic_damage_component.gd" id="7_sxdsy"]
+[ext_resource type="Script" uid="uid://d02aui8yg1bne" path="res://script/components/particle_component.gd" id="9_kipim"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_3vdjl"]
 atlas = ExtResource("2_6blvv")
@@ -29,6 +30,34 @@ size = Vector2(8, 8)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_i6qc7"]
 size = Vector2(8, 8)
+
+[sub_resource type="Gradient" id="Gradient_ifur4"]
+offsets = PackedFloat32Array(1)
+colors = PackedColorArray(1, 1, 1, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_7rey1"]
+gradient = SubResource("Gradient_ifur4")
+width = 1
+height = 1
+
+[sub_resource type="Curve" id="Curve_c47fy"]
+_data = [Vector2(0, 0.88764), 0.0, 0.0, 0, 0, Vector2(0.25, 0.370787), -0.779026, -0.779026, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_x3qiy"]
+curve = SubResource("Curve_c47fy")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_813c3"]
+particle_flag_disable_z = true
+spread = 180.0
+initial_velocity_min = 12.0
+initial_velocity_max = 23.0
+gravity = Vector3(0, 0, 0)
+damping_min = 17.0
+damping_max = 17.0
+scale_min = 1.1
+scale_max = 1.2
+alpha_curve = SubResource("CurveTexture_x3qiy")
 
 [node name="Ghost" type="Node2D" groups=["Ghost"]]
 script = ExtResource("1_a6lf4")
@@ -71,3 +100,16 @@ shape = SubResource("RectangleShape2D_i6qc7")
 script = ExtResource("7_sxdsy")
 kill_actor = false
 persistent = true
+
+[node name="GPUParticles2D" type="GPUParticles2D" parent="." node_paths=PackedStringArray("collision_component")]
+z_index = -1
+emitting = false
+amount = 24
+texture = SubResource("GradientTexture2D_7rey1")
+lifetime = 0.6
+one_shot = true
+explosiveness = 1.0
+process_material = SubResource("ParticleProcessMaterial_813c3")
+script = ExtResource("9_kipim")
+collision_component = NodePath("../DamageCollisionComponent")
+play_on_hit = true

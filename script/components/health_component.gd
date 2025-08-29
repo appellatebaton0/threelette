@@ -4,7 +4,7 @@ class_name HealthComponent
 signal health_reached_zero
 signal took_damage
 
-@export var max:float = 50.0
+@export var max_health:float = 50.0
 @export var health:float = 50.0
 
 @export var die_on_health_zero:bool = false
@@ -13,8 +13,8 @@ signal took_damage
 @onready var main:Main = get_tree().get_first_node_in_group("Main")
 
 func randomize_values():
-	max = randf_range(30, 80)
-	health = max
+	max_health = randf_range(30, 80)
+	health = max_health
 
 func take_damage(amount:float, from:Actor, knockback:float = 110.0):
 	
@@ -36,4 +36,4 @@ func _on_health_reached_zero():
 		actor.queue_free()
 	if reset_on_health_zero:
 		main.reset.emit()
-		health = max
+		health = max_health

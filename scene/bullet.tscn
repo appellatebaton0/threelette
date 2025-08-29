@@ -1,13 +1,49 @@
-[gd_scene load_steps=7 format=3 uid="uid://bxh6b3pdh5us6"]
+[gd_scene load_steps=14 format=3 uid="uid://bxh6b3pdh5us6"]
 
 [ext_resource type="Script" uid="uid://chkqfm8bp2oq0" path="res://script/actor.gd" id="1_m2l4i"]
 [ext_resource type="Texture2D" uid="uid://bjxsnkj2yrxxm" path="res://asset/bullet.png" id="2_m2l4i"]
 [ext_resource type="PackedScene" uid="uid://bywv41s6t0tet" path="res://scene/components/damage_collision_component.tscn" id="4_1bt1p"]
 [ext_resource type="PackedScene" uid="uid://c1b6tlbtnjq7" path="res://scene/components/move_straight_component.tscn" id="4_duwpg"]
 [ext_resource type="Script" uid="uid://cmhvcqje2dowc" path="res://script/components/basic_damage_component.gd" id="5_duwpg"]
+[ext_resource type="Script" uid="uid://d02aui8yg1bne" path="res://script/components/particle_component.gd" id="6_4wfq1"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_duwpg"]
 size = Vector2(1, 1)
+
+[sub_resource type="Curve" id="Curve_duwpg"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.132353, 0.820225), 0.0, 0.0, 0, 0, Vector2(0.647059, 0.808989), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 4
+
+[sub_resource type="CurveTexture" id="CurveTexture_4wfq1"]
+curve = SubResource("Curve_duwpg")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_66or7"]
+particle_flag_disable_z = true
+emission_shape = 2
+emission_sphere_radius = 2.0
+gravity = Vector3(0, 0, 0)
+scale_min = 0.2
+scale_max = 0.4
+alpha_curve = SubResource("CurveTexture_4wfq1")
+
+[sub_resource type="Curve" id="Curve_66or7"]
+_data = [Vector2(0, 0.88764), 0.0, 0.0, 0, 0, Vector2(0.25, 0.370787), -0.779026, -0.779026, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_tsdkm"]
+curve = SubResource("Curve_66or7")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_cgjbn"]
+particle_flag_disable_z = true
+spread = 180.0
+initial_velocity_min = 12.0
+initial_velocity_max = 23.0
+gravity = Vector3(0, 0, 0)
+damping_min = 17.0
+damping_max = 17.0
+scale_min = 0.4
+scale_max = 0.6
+alpha_curve = SubResource("CurveTexture_tsdkm")
 
 [node name="Bullet" type="Node2D"]
 z_index = -1
@@ -36,3 +72,25 @@ shape = SubResource("RectangleShape2D_duwpg")
 script = ExtResource("5_duwpg")
 damage = 10.0
 persistent = true
+
+[node name="GPUParticles2D" type="GPUParticles2D" parent="." node_paths=PackedStringArray("collision_component")]
+texture_filter = 1
+amount = 16
+texture = ExtResource("2_m2l4i")
+process_material = SubResource("ParticleProcessMaterial_66or7")
+script = ExtResource("6_4wfq1")
+collision_component = NodePath("../DamageCollisionComponent")
+kill_on_hit = true
+
+[node name="ParticleComponent" type="GPUParticles2D" parent="." node_paths=PackedStringArray("collision_component")]
+emitting = false
+amount = 16
+texture = ExtResource("2_m2l4i")
+one_shot = true
+explosiveness = 1.0
+trail_enabled = true
+trail_lifetime = 0.1
+process_material = SubResource("ParticleProcessMaterial_cgjbn")
+script = ExtResource("6_4wfq1")
+collision_component = NodePath("../DamageCollisionComponent")
+play_on_hit = true

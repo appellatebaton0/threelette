@@ -13,3 +13,6 @@ func change_state(to:String):
 	state = to
 	
 	state_changed.emit(to)
+
+func is_facing_left() -> bool:
+	return false

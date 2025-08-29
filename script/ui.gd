@@ -18,10 +18,10 @@ func _ready() -> void:
 		if child is UpgradeButton:
 			child.selected.connect(_on_upgrade_selected)
 
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	if player_health_component != null:
-		health_bar.value = player_health_component.health
-		health_bar.max_value = player_health_component.max
+		health_bar.value = lerp(health_bar.value, player_health_component.health, 0.4)
+		health_bar.max_value = player_health_component.max_health
 	
 	var ghosts_left = len(get_tree().get_nodes_in_group("Ghost"))
 	ghost_counter.text = (str(ghosts_left) + " Ghost Left") if ghosts_left == 1 else (str(ghosts_left) + " Ghosts Left")

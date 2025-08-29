@@ -11,26 +11,30 @@ var round_num:int = 1
 
 @onready var spawnpoints:Array[Vector2] = get_spawnpoints()
 func get_spawnpoints() -> Array[Vector2]:
-	var spawnpoints:Array[Vector2]
+	var ret_spawnpoints:Array[Vector2]
 	
 	for child in get_children():
 		if child is Node2D:
-			spawnpoints.append(child.global_position)
+			ret_spawnpoints.append(child.global_position)
 	
-	return spawnpoints
+	return ret_spawnpoints
 
 @export var enemy_options:Array[ConditionalEnemyOption]
 
 func get_enemy_options() -> Array[PackedScene]:
 	var options:Array[PackedScene]
 	
+	for option in enemy_options:
+		if option.is_true_on_round(round_num):
+			options.append(option.scene)
+	
 	return options
 
-func spawn_enemy_at(position:Vector2):
+func spawn_enemy_at(pos:Vector2):
 	
 	var new:Actor = get_enemy_options().pick_random().instantiate()
 	
-	new.global_position = position
+	new.global_position = pos
 	
 	new.get_motion_component().randomize_values()
 	new.get_health_component().randomize_values()
@@ -55,7 +59,7 @@ func spawn_round(round_number:int):
 	round_running = true
 	
 
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	if len(get_tree().get_nodes_in_group("Ghost")) <= 0 and round_running:
 		round_running = false
 		round_num += 1

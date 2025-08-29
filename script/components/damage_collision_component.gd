@@ -1,6 +1,7 @@
 extends CollisionComponent
 class_name DamageCollisionComponent
 
+
 @onready var damage_components:Array[DamageComponent]
 
 @export var duplicate_damage:bool = false
@@ -11,6 +12,7 @@ func _once_ready():
 		damage_components = actor.get_damage_components()
 
 func _on_hit(hit_target):
+	hit_something.emit()
 	if hit_target is Actor:
 		if hit_target == actor:
 			return

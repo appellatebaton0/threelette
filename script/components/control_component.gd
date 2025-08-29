@@ -34,7 +34,7 @@ const SLIDE_SPEED:float = 30.0
 
 const GRAVITY_MULTIPLIER:float = 0.23
 
-# Collision
+# Collision & Facing
 
 var active_collision:Node2D
 func set_active_collision(to:Node2D):
@@ -48,6 +48,13 @@ func set_active_collision(to:Node2D):
 			child.set_deferred("disabled", true)
 	
 	to.set_deferred("disabled", false)
+
+func is_facing_left() -> bool:
+	
+	if me.get_wall_normal() != Vector2.ZERO:
+		return (me.get_wall_normal().x + 1) / 2 > 0
+	
+	return me.velocity.x < 0
 
 ## Math and logic functions
 func abs_highest(values:Array[float]) -> float:

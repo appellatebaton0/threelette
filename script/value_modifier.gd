@@ -12,9 +12,9 @@ func get_end() -> ValueModifier:
 		return self
 	return next_modifier.get_end()
 
-func append(modifier:ValueModifier) -> bool:
+func append(new_modifier:ValueModifier) -> bool:
 	if get_end().next_modifier == null:
-		get_end().next_modifier = modifier
+		get_end().next_modifier = new_modifier
 		return true
 	else:
 		return false

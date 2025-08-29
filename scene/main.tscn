@@ -7,10 +7,12 @@
 [ext_resource type="PackedScene" uid="uid://c0fs5pamqm6sx" path="res://scene/ghost.tscn" id="5_4j5ol"]
 [ext_resource type="Script" uid="uid://ehyd6eic6by7" path="res://script/wave_spawner.gd" id="6_of57s"]
 [ext_resource type="Script" uid="uid://cfc1ceoon2hao" path="res://script/ui.gd" id="6_p1hux"]
+[ext_resource type="Script" uid="uid://dbrqfh5sguveo" path="res://script/conditional_enemy_option.gd" id="6_v2gmf"]
 [ext_resource type="FontFile" uid="uid://56oth5rgomi" path="res://asset/MegamaxJonathanToo-YqOq2.ttf" id="7_wscrc"]
 [ext_resource type="Script" uid="uid://cu8hqapcu28xf" path="res://script/upgrade_button.gd" id="8_of57s"]
 [ext_resource type="Script" uid="uid://cmhvcqje2dowc" path="res://script/components/basic_damage_component.gd" id="9_b5f6u"]
 [ext_resource type="Texture2D" uid="uid://bhehkhqshggid" path="res://asset/upgrade_background.png" id="9_hybxs"]
+[ext_resource type="Texture2D" uid="uid://lyggbuc451ex" path="res://asset/healthbar.png" id="10_jcbur"]
 [ext_resource type="Script" uid="uid://cn0eaoggh0ha" path="res://script/components/shoot_modifier.gd" id="10_k65ib"]
 [ext_resource type="Texture2D" uid="uid://ce8qx1853jkn5" path="res://asset/button.png" id="10_v2gmf"]
 [ext_resource type="Script" uid="uid://catl2wiow6owd" path="res://script/value_modifier.gd" id="11_wscrc"]
@@ -200,35 +202,28 @@ terrain_set_0/terrain_0/name = "Ground"
 terrain_set_0/terrain_0/color = Color(0.501961, 0.0980392, 0.25098, 1)
 sources/0 = SubResource("TileSetAtlasSource_brvut")
 
+[sub_resource type="Resource" id="Resource_jcbur"]
+script = ExtResource("6_v2gmf")
+scene = ExtResource("5_4j5ol")
+condition_type = 1
+value = -1
+metadata/_custom_type_script = "uid://dbrqfh5sguveo"
+
 [sub_resource type="Theme" id="Theme_mswub"]
 Button/fonts/font = ExtResource("7_wscrc")
 Label/colors/font_color = Color(0.988235, 0.917647, 0.843137, 1)
 Label/fonts/font = ExtResource("7_wscrc")
 
-[sub_resource type="Gradient" id="Gradient_0ha60"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_smf0o"]
+atlas = ExtResource("10_jcbur")
+region = Rect2(0, 0, 49, 8)
 
-[sub_resource type="GradientTexture2D" id="GradientTexture2D_4j5ol"]
-gradient = SubResource("Gradient_0ha60")
-width = 500
-height = 75
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_tv8i1"]
+load_path = "res://.godot/imported/healthbar.png-2c6bbb3baa6a2e8d03ccadae3e51a241.ctex"
 
-[sub_resource type="Gradient" id="Gradient_p1hux"]
-offsets = PackedFloat32Array(0.00704225, 1)
-colors = PackedColorArray(1, 1, 1, 0.545098, 0, 0, 0, 0.388235)
-
-[sub_resource type="GradientTexture2D" id="GradientTexture2D_of57s"]
-gradient = SubResource("Gradient_p1hux")
-width = 500
-height = 75
-
-[sub_resource type="Gradient" id="Gradient_b5f6u"]
-offsets = PackedFloat32Array(0.0140845, 1)
-colors = PackedColorArray(1, 0, 0, 1, 0, 0, 1, 1)
-
-[sub_resource type="GradientTexture2D" id="GradientTexture2D_tqoya"]
-gradient = SubResource("Gradient_b5f6u")
-width = 500
-height = 75
+[sub_resource type="AtlasTexture" id="AtlasTexture_p8adh"]
+atlas = SubResource("CompressedTexture2D_tv8i1")
+region = Rect2(0, 8, 49, 8)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tqoya"]
 bg_color = Color(0.34, 0.221, 0.32215, 1)
@@ -355,7 +350,7 @@ player = NodePath("../Player")
 
 [node name="WaveSpawner" type="Node2D" parent="World" groups=["WaveSpawner"]]
 script = ExtResource("6_of57s")
-enemy_options = Array[PackedScene]([ExtResource("5_4j5ol")])
+enemy_options = Array[ExtResource("6_v2gmf")]([SubResource("Resource_jcbur")])
 
 [node name="Option1" type="Node2D" parent="World/WaveSpawner"]
 position = Vector2(-22, -102)
@@ -442,26 +437,33 @@ theme_override_constants/margin_top = 20
 theme_override_constants/margin_right = 20
 theme_override_constants/margin_bottom = 20
 
-[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/UI/MarginContainer"]
+[node name="VBoxContainer" type="HBoxContainer" parent="CanvasLayer/UI/MarginContainer"]
 layout_mode = 2
 theme_override_constants/separation = 20
 
 [node name="HealthBar" type="TextureProgressBar" parent="CanvasLayer/UI/MarginContainer/VBoxContainer"]
+texture_filter = 1
 custom_minimum_size = Vector2(500, 75)
 layout_mode = 2
+size_flags_horizontal = 2
 size_flags_vertical = 0
-value = 74.0
-texture_under = SubResource("GradientTexture2D_4j5ol")
-texture_over = SubResource("GradientTexture2D_of57s")
-texture_progress = SubResource("GradientTexture2D_tqoya")
+step = 0.1
+value = 63.0
+nine_patch_stretch = true
+texture_under = SubResource("AtlasTexture_smf0o")
+texture_progress = SubResource("AtlasTexture_p8adh")
 
 [node name="GhostCounter" type="Label" parent="CanvasLayer/UI/MarginContainer/VBoxContainer"]
 layout_mode = 2
+size_flags_horizontal = 6
+size_flags_vertical = 0
 theme_override_font_sizes/font_size = 50
 text = "1 Ghosts Left"
 
 [node name="RoundCounter" type="Label" parent="CanvasLayer/UI/MarginContainer/VBoxContainer"]
 layout_mode = 2
+size_flags_horizontal = 10
+size_flags_vertical = 0
 theme_override_font_sizes/font_size = 50
 text = "Round 1"
 

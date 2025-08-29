@@ -23,5 +23,5 @@ func get_follow_point() -> Vector2:
 	
 	return follow_point
 	
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	global_position = get_follow_point()
