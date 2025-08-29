@@ -1,4 +1,4 @@
-extends Node2D
+extends Node
 class_name Component
 
 @export var persistent:bool = false
@@ -23,5 +23,5 @@ func component_effect() -> String:
 	return ""
 
 func _on_reset():
-	if not persistent:
+	if not persistent and not get_parent() is UpgradeButton:
 		queue_free()

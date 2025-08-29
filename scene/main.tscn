@@ -1,17 +1,19 @@
-[gd_scene load_steps=46 format=4 uid="uid://0150fi1oruao"]
+[gd_scene load_steps=50 format=4 uid="uid://0150fi1oruao"]
 
 [ext_resource type="Script" uid="uid://r4lylcgp4v8e" path="res://script/main.gd" id="1_itxqv"]
 [ext_resource type="Texture2D" uid="uid://clsf5vp74l5f2" path="res://asset/tileset.png" id="2_wp4xf"]
 [ext_resource type="PackedScene" uid="uid://l7ahshis2ps3" path="res://scene/player.tscn" id="3_brvut"]
 [ext_resource type="Script" uid="uid://1cn1q2fm1xn1" path="res://script/camera.gd" id="4_brvut"]
-[ext_resource type="PackedScene" uid="uid://c0fs5pamqm6sx" path="res://scene/ghost.tscn" id="5_4j5ol"]
+[ext_resource type="PackedScene" uid="uid://c0fs5pamqm6sx" path="res://scene/ghosts/basic_ghost.tscn" id="5_4j5ol"]
 [ext_resource type="Script" uid="uid://ehyd6eic6by7" path="res://script/wave_spawner.gd" id="6_of57s"]
 [ext_resource type="Script" uid="uid://cfc1ceoon2hao" path="res://script/ui.gd" id="6_p1hux"]
 [ext_resource type="Script" uid="uid://dbrqfh5sguveo" path="res://script/conditional_enemy_option.gd" id="6_v2gmf"]
 [ext_resource type="FontFile" uid="uid://56oth5rgomi" path="res://asset/MegamaxJonathanToo-YqOq2.ttf" id="7_wscrc"]
 [ext_resource type="Script" uid="uid://cu8hqapcu28xf" path="res://script/upgrade_button.gd" id="8_of57s"]
+[ext_resource type="PackedScene" uid="uid://ck6f6gy1xixrf" path="res://scene/ghosts/speedy_ghost.tscn" id="8_smf0o"]
 [ext_resource type="Script" uid="uid://cmhvcqje2dowc" path="res://script/components/basic_damage_component.gd" id="9_b5f6u"]
 [ext_resource type="Texture2D" uid="uid://bhehkhqshggid" path="res://asset/upgrade_background.png" id="9_hybxs"]
+[ext_resource type="PackedScene" uid="uid://cttw260xs3udy" path="res://asset/ghosts/tank_ghost.tscn" id="9_tv8i1"]
 [ext_resource type="Texture2D" uid="uid://lyggbuc451ex" path="res://asset/healthbar.png" id="10_jcbur"]
 [ext_resource type="Script" uid="uid://cn0eaoggh0ha" path="res://script/components/shoot_modifier.gd" id="10_k65ib"]
 [ext_resource type="Texture2D" uid="uid://ce8qx1853jkn5" path="res://asset/button.png" id="10_v2gmf"]
@@ -205,8 +207,25 @@ sources/0 = SubResource("TileSetAtlasSource_brvut")
 [sub_resource type="Resource" id="Resource_jcbur"]
 script = ExtResource("6_v2gmf")
 scene = ExtResource("5_4j5ol")
+cost = 1
 condition_type = 1
 value = -1
+metadata/_custom_type_script = "uid://dbrqfh5sguveo"
+
+[sub_resource type="Resource" id="Resource_tv8i1"]
+script = ExtResource("6_v2gmf")
+scene = ExtResource("8_smf0o")
+cost = 2
+condition_type = 1
+value = 3
+metadata/_custom_type_script = "uid://dbrqfh5sguveo"
+
+[sub_resource type="Resource" id="Resource_0vlqb"]
+script = ExtResource("6_v2gmf")
+scene = ExtResource("9_tv8i1")
+cost = 3
+condition_type = 1
+value = 6
 metadata/_custom_type_script = "uid://dbrqfh5sguveo"
 
 [sub_resource type="Theme" id="Theme_mswub"]
@@ -349,8 +368,9 @@ script = ExtResource("4_brvut")
 player = NodePath("../Player")
 
 [node name="WaveSpawner" type="Node2D" parent="World" groups=["WaveSpawner"]]
+position = Vector2(-3, 0)
 script = ExtResource("6_of57s")
-enemy_options = Array[ExtResource("6_v2gmf")]([SubResource("Resource_jcbur")])
+enemy_options = Array[ExtResource("6_v2gmf")]([SubResource("Resource_jcbur"), SubResource("Resource_tv8i1"), SubResource("Resource_0vlqb")])
 
 [node name="Option1" type="Node2D" parent="World/WaveSpawner"]
 position = Vector2(-22, -102)

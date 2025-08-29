@@ -4,6 +4,8 @@ class_name HealthComponent
 signal health_reached_zero
 signal took_damage
 
+@export var max_health_range:Vector2 = Vector2(30,80)
+
 @export var max_health:float = 50.0
 @export var health:float = 50.0
 
@@ -13,7 +15,7 @@ signal took_damage
 @onready var main:Main = get_tree().get_first_node_in_group("Main")
 
 func randomize_values():
-	max_health = randf_range(30, 80)
+	max_health = randf_range(max_health_range.x, max_health_range.y)
 	health = max_health
 
 func take_damage(amount:float, from:Actor, knockback:float = 110.0):

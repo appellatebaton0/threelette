@@ -26,13 +26,18 @@ var jump_buffering:float = 0.0
 # Wall jumping
 const WALL_JUMP_VELOCITY:Vector2 = Vector2(MAX_SPEED,JUMP_VELOCITY) * 1.4
 
-const LEFT_FLOOR_BUFFER:float = 0.2 # How long the player has to have been off the floor for them to stick to walls
+const WALL_JUMP_BUFFERING:float = 0.15
+var wall_jump_buffering:float = 0.0
+
+const LEFT_FLOOR_BUFFER:float = 0.1 # How long the player has to have been off the floor for them to stick to walls
 var left_floor_buffer:float = 0.0
 
 const SLIDE_ACCELERATION:float = 8.0
 const SLIDE_SPEED:float = 30.0
 
 const GRAVITY_MULTIPLIER:float = 0.23
+
+var wall_side:float = 0.0
 
 # Collision & Facing
 
@@ -119,8 +124,9 @@ func _physics_process(delta: float) -> void:
 		
 		## Wall Jumping
 		
-		var wall_side:float = me.get_wall_normal().x
+		wall_jump_buffering = move_toward(wall_jump_buffering, 0, delta)
 		if me.is_on_wall_only() and left_floor_buffer == 0:
+			wall_side = me.get_wall_normal().x
 			
 			# Slow down upwards momentum significantly
 			if me.velocity.y < 0:
@@ -134,12 +140,14 @@ func _physics_process(delta: float) -> void:
 			if me.velocity.y > SLIDE_SPEED:
 				me.velocity.y = SLIDE_SPEED
 			
-			if jump_buffering > 0:
-				# Global.play_sfx.emit(jump_sfx)
-				
-				# Wall jump, applying the wall side as a multiplier to make the jump to the right side
-				me.velocity = WALL_JUMP_VELOCITY * Vector2(wall_side, 1)
-				jump_buffering = 0
+			wall_jump_buffering = WALL_JUMP_BUFFERING
+			
+		if jump_buffering > 0 and wall_jump_buffering > 0:
+			# Global.play_sfx.emit(jump_sfx)
+			
+			# Wall jump, applying the wall side as a multiplier to make the jump to the right side
+			me.velocity = WALL_JUMP_VELOCITY * Vector2(wall_side, 1)
+			jump_buffering = 0
 		
 		## Movement
 		

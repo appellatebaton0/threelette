@@ -7,7 +7,7 @@ signal round_complete
 signal start_round
 
 var round_running:bool = false
-var round_num:int = 1
+var round_num:int = 20
 
 @onready var spawnpoints:Array[Vector2] = get_spawnpoints()
 func get_spawnpoints() -> Array[Vector2]:
@@ -21,37 +21,38 @@ func get_spawnpoints() -> Array[Vector2]:
 
 @export var enemy_options:Array[ConditionalEnemyOption]
 
-func get_enemy_options() -> Array[PackedScene]:
-	var options:Array[PackedScene]
-	
-	for option in enemy_options:
-		if option.is_true_on_round(round_num):
-			options.append(option.scene)
-	
-	return options
 
-func spawn_enemy_at(pos:Vector2):
+func spawn_enemy_at(pos:Vector2, money:int) -> int:
 	
-	var new:Actor = get_enemy_options().pick_random().instantiate()
+	var choice:ConditionalEnemyOption = enemy_options.pick_random()
 	
+	var break_limit:int = 0
+	while choice.cost > money:
+		choice = enemy_options.pick_random()
+		break_limit += 1
+		
+		if break_limit > 100:
+			return -1
+	
+	var new:Actor = choice.scene.instantiate()
 	new.global_position = pos
 	
 	new.get_motion_component().randomize_values()
 	new.get_health_component().randomize_values()
 	
 	add_sibling(new)
-	
-	return new
+	return money - choice.cost
 
 func spawn_round(round_number:int):
 	var spawn_options = spawnpoints.duplicate()
+	var money = round_number
 	
-	for i in range(round_number):
+	while money > 0:
 		if len(spawn_options) <= 0:
 			spawn_options = spawnpoints.duplicate()
 		
 		var spawn_at = spawnpoints.pick_random()
-		spawn_enemy_at(spawn_at)
+		money = spawn_enemy_at(spawn_at, money)
 		
 		spawn_options.erase(spawn_at)
 		

@@ -9,6 +9,7 @@ var fire_delay = 0.0
 @export var aim_assist:bool = true
 @export var aim_assist_threshold:float = 200.0
 
+@onready var wave_spawner:WaveSpawner = get_tree().get_first_node_in_group("WaveSpawner")
 @onready var camera:Camera = get_tree().get_first_node_in_group("Camera")
 @onready var me:Node2D = get_me()
 
@@ -62,7 +63,7 @@ func _ready() -> void:
 
 func _process(delta: float) -> void:
 	
-	if fire_delay <= 0:
+	if fire_delay <= 0 and wave_spawner.round_running:
 		fire_bullet()
 		fire_delay = fire_rate_modifier.modify_value(fire_rate) if fire_rate_modifier != null else fire_rate
 	

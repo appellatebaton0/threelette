@@ -1,12 +1,14 @@
-[gd_scene load_steps=19 format=3 uid="uid://c0fs5pamqm6sx"]
+[gd_scene load_steps=24 format=3 uid="uid://c0fs5pamqm6sx"]
 
 [ext_resource type="Script" uid="uid://chkqfm8bp2oq0" path="res://script/actor.gd" id="1_a6lf4"]
-[ext_resource type="Texture2D" uid="uid://du6twrl60jldv" path="res://asset/ghost.png" id="2_6blvv"]
+[ext_resource type="Texture2D" uid="uid://du6twrl60jldv" path="res://asset/ghosts/ghost.png" id="2_6blvv"]
 [ext_resource type="PackedScene" uid="uid://cjh4saf780s6x" path="res://scene/components/animated_component.tscn" id="2_i6qc7"]
 [ext_resource type="Script" uid="uid://dhxm1k5v433lq" path="res://script/components/ghost_motion_component.gd" id="3_tshrd"]
 [ext_resource type="PackedScene" uid="uid://brao4oyh1oqjn" path="res://scene/components/health_component.tscn" id="3_x6lhc"]
 [ext_resource type="PackedScene" uid="uid://bywv41s6t0tet" path="res://scene/components/damage_collision_component.tscn" id="4_224s6"]
 [ext_resource type="Script" uid="uid://cen0hya12ws2a" path="res://script/components/basic_collision_component.gd" id="5_224s6"]
+[ext_resource type="Script" uid="uid://dqj5qaqrjdi06" path="res://script/components/health_bar_component.gd" id="6_6qcuc"]
+[ext_resource type="Texture2D" uid="uid://c4pbt65xjkdlf" path="res://asset/ghost_healthbar.png" id="6_lhvjm"]
 [ext_resource type="Script" uid="uid://cmhvcqje2dowc" path="res://script/components/basic_damage_component.gd" id="7_sxdsy"]
 [ext_resource type="Script" uid="uid://d02aui8yg1bne" path="res://script/components/particle_component.gd" id="9_kipim"]
 
@@ -24,6 +26,17 @@ animations = [{
 "name": &"idle",
 "speed": 5.0
 }]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_nears"]
+atlas = ExtResource("6_lhvjm")
+region = Rect2(0, 0, 14, 2)
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_kn084"]
+load_path = "res://.godot/imported/ghost_healthbar.png-6790d7d19b8ded954bc133f29b3bc6ad.ctex"
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_yleyw"]
+atlas = SubResource("CompressedTexture2D_kn084")
+region = Rect2(0, 2, 14, 2)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_224s6"]
 size = Vector2(8, 8)
@@ -77,6 +90,18 @@ actor = NodePath("..")
 die_on_health_zero = true
 persistent = true
 
+[node name="TextureProgressBar" type="TextureProgressBar" parent="." node_paths=PackedStringArray("actor")]
+texture_filter = 1
+offset_left = -7.0
+offset_top = -10.0
+offset_right = 9.0
+offset_bottom = -8.0
+value = 50.0
+texture_under = SubResource("AtlasTexture_nears")
+texture_progress = SubResource("AtlasTexture_yleyw")
+script = ExtResource("6_6qcuc")
+actor = NodePath("..")
+
 [node name="BasicCollisionComponent" type="Area2D" parent="."]
 collision_layer = 4
 collision_mask = 10
@@ -90,6 +115,7 @@ shape = SubResource("RectangleShape2D_224s6")
 collision_layer = 8
 collision_mask = 2
 duplicate_damage = true
+damage_delay = 1.0
 persistent = true
 actor = NodePath("..")
 

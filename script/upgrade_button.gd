@@ -23,7 +23,6 @@ var upgrade:Component
 
 func load_new_upgrade(with:Array[Component] = valid_upgrades):
 	var options:Array[Component] = with.duplicate(true)
-	
 	var choice:Component = options.pick_random()
 	options.erase(choice)
 	

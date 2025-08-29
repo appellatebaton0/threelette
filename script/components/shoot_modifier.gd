@@ -11,7 +11,6 @@ func component_effect() -> String:
 
 func _process(_delta: float) -> void:
 	if actor != null:
-		print("freed ", self)
 		var shoot_component:ShootComponent = actor.get_shoot_component()
 		if shoot_component.fire_rate_modifier != null:
 			shoot_component.fire_rate_modifier.append(modifier.duplicate())

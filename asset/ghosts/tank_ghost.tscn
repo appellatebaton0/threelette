@@ -1,0 +1,141 @@
+[gd_scene load_steps=23 format=3 uid="uid://cttw260xs3udy"]
+
+[ext_resource type="Script" uid="uid://chkqfm8bp2oq0" path="res://script/actor.gd" id="1_a0ol7"]
+[ext_resource type="PackedScene" uid="uid://cjh4saf780s6x" path="res://scene/components/animated_component.tscn" id="2_tf72x"]
+[ext_resource type="Texture2D" uid="uid://bsts4836hihlr" path="res://asset/ghosts/tank_ghost.png" id="3_yowdp"]
+[ext_resource type="Script" uid="uid://c5cygco8dyhif" path="res://script/components/ghost_rush_component.gd" id="4_yowdp"]
+[ext_resource type="PackedScene" uid="uid://brao4oyh1oqjn" path="res://scene/components/health_component.tscn" id="5_l0stv"]
+[ext_resource type="Script" uid="uid://cen0hya12ws2a" path="res://script/components/basic_collision_component.gd" id="6_eixmn"]
+[ext_resource type="Script" uid="uid://dqj5qaqrjdi06" path="res://script/components/health_bar_component.gd" id="6_tf72x"]
+[ext_resource type="Texture2D" uid="uid://c4pbt65xjkdlf" path="res://asset/ghost_healthbar.png" id="6_yowdp"]
+[ext_resource type="PackedScene" uid="uid://bywv41s6t0tet" path="res://scene/components/damage_collision_component.tscn" id="7_hiy13"]
+[ext_resource type="Script" uid="uid://cmhvcqje2dowc" path="res://script/components/basic_damage_component.gd" id="8_rv3tp"]
+[ext_resource type="Script" uid="uid://d02aui8yg1bne" path="res://script/components/particle_component.gd" id="9_6l0gq"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_caclx"]
+atlas = ExtResource("3_yowdp")
+region = Rect2(0, 0, 12, 12)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_hvgqe"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_caclx")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 5.0
+}]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0dn8c"]
+atlas = ExtResource("6_yowdp")
+region = Rect2(0, 0, 14, 2)
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_l0stv"]
+load_path = "res://.godot/imported/ghost_healthbar.png-6790d7d19b8ded954bc133f29b3bc6ad.ctex"
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_eixmn"]
+atlas = SubResource("CompressedTexture2D_l0stv")
+region = Rect2(0, 2, 14, 2)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_o3jf0"]
+size = Vector2(12, 12)
+
+[sub_resource type="Gradient" id="Gradient_ifur4"]
+offsets = PackedFloat32Array(1)
+colors = PackedColorArray(1, 1, 1, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_7rey1"]
+gradient = SubResource("Gradient_ifur4")
+width = 1
+height = 1
+
+[sub_resource type="Curve" id="Curve_c47fy"]
+_data = [Vector2(0, 0.88764), 0.0, 0.0, 0, 0, Vector2(0.25, 0.370787), -0.779026, -0.779026, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_x3qiy"]
+curve = SubResource("Curve_c47fy")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_813c3"]
+particle_flag_disable_z = true
+spread = 180.0
+initial_velocity_min = 12.0
+initial_velocity_max = 23.0
+gravity = Vector3(0, 0, 0)
+damping_min = 17.0
+damping_max = 17.0
+scale_min = 1.1
+scale_max = 1.2
+alpha_curve = SubResource("CurveTexture_x3qiy")
+
+[node name="TankGhost" type="Node2D" groups=["Ghost"]]
+script = ExtResource("1_a0ol7")
+
+[node name="AnimatedComponent" parent="." node_paths=PackedStringArray("actor") instance=ExtResource("2_tf72x")]
+sprite_frames = SubResource("SpriteFrames_hvgqe")
+animation = &"idle"
+persistent = true
+actor = NodePath("..")
+
+[node name="GhostMotionComponent" type="Node2D" parent="." node_paths=PackedStringArray("actor")]
+script = ExtResource("4_yowdp")
+actor = NodePath("..")
+
+[node name="HealthComponent" parent="." instance=ExtResource("5_l0stv")]
+max_health_range = Vector2(90, 120)
+die_on_health_zero = true
+persistent = true
+
+[node name="TextureProgressBar2" type="TextureProgressBar" parent="." node_paths=PackedStringArray("actor")]
+texture_filter = 1
+offset_left = -7.0
+offset_top = -10.0
+offset_right = 9.0
+offset_bottom = -8.0
+value = 50.0
+texture_under = SubResource("AtlasTexture_0dn8c")
+texture_progress = SubResource("AtlasTexture_eixmn")
+script = ExtResource("6_tf72x")
+actor = NodePath("..")
+
+[node name="BasicCollisionComponent" type="Area2D" parent="."]
+visible = false
+collision_layer = 4
+collision_mask = 10
+script = ExtResource("6_eixmn")
+persistent = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BasicCollisionComponent"]
+shape = SubResource("RectangleShape2D_o3jf0")
+
+[node name="DamageCollisionComponent" parent="." node_paths=PackedStringArray("actor") instance=ExtResource("7_hiy13")]
+visible = false
+collision_layer = 8
+collision_mask = 2
+duplicate_damage = true
+damage_delay = 1.0
+persistent = true
+actor = NodePath("..")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DamageCollisionComponent"]
+shape = SubResource("RectangleShape2D_o3jf0")
+
+[node name="BasicDamageComponent" type="Node2D" parent="."]
+script = ExtResource("8_rv3tp")
+damage = 30.0
+kill_actor = false
+persistent = true
+
+[node name="GPUParticles2D" type="GPUParticles2D" parent="." node_paths=PackedStringArray("collision_component")]
+z_index = -1
+emitting = false
+amount = 24
+texture = SubResource("GradientTexture2D_7rey1")
+lifetime = 0.6
+one_shot = true
+explosiveness = 1.0
+process_material = SubResource("ParticleProcessMaterial_813c3")
+script = ExtResource("9_6l0gq")
+collision_component = NodePath("../DamageCollisionComponent")
+play_on_hit = true

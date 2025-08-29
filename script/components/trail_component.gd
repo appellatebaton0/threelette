@@ -4,9 +4,10 @@ class_name TrailComponent
 var me:Line2D = get_me()
 
 @onready var motion_component:MotionComponent = actor.get_motion_component()
+@export_range(0.0, 1.5, 0.01) var motion_multiplier:float = 0.05
 
 @export var trail_segments:int = 2
-@export_range(0.0, 1.0, 0.05) var lerp_weight:float = 0.0
+@export_range(-1.0, 1.0, 0.05) var lerp_weight:float = 0.0
 
 var trail:Line2D
 
@@ -30,5 +31,5 @@ func _process(_delta: float) -> void:
 		if i == 0:
 			me.set_point_position(i, Vector2.ZERO)
 		else:
-			me.set_point_position(i, lerp(me.get_point_position(i), me.get_point_position(i - 1) - (motion_component.velocity * 0.05), lerp_weight))
+			me.set_point_position(i, lerp(me.get_point_position(i), me.get_point_position(i - 1) - (motion_component.velocity * motion_multiplier), lerp_weight))
 			#to_local(lerp(to_global(me.get_point_position(i)), to_global(me.get_point_position(i - 1)), lerp_weight))

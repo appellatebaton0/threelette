@@ -114,6 +114,7 @@ actor = NodePath("..")
 
 [node name="TrailComponent" type="Line2D" parent="." node_paths=PackedStringArray("actor")]
 z_index = -1
+points = PackedVector2Array(21, 2)
 width = 4.0
 width_curve = SubResource("Curve_hp4bs")
 default_color = Color(0.98, 0.71736, 0.3234, 0.647059)
